@@ -107,3 +107,35 @@ cat > filename.txt << EOF
 echo 'content goes here'
 EOF
 ```
+
+### powershell filter / powershell where 
+if the result of the filter is a single item - powershell treats it as an object, not array. Need to explicitly make it array
+```powershell
+([Array]($list | where prop -eq 'something'))
+```
+
+### powershell select multiple fields
+```powershell
+$list | select-object -property Prop1,Prop2
+```
+
+### azure devops powershell / azuredevops powershell
+In order to not introduce unwanted Task group input parameters:
+```powershell
+Write-Host ("{0}" -f $variable)
+# instead of 
+Write-Host "$variable"
+
+# AND
+
+$env:TempPipelineVariable
+# instead of 
+$(TempPipelineVariable)
+```
+
+### powershell rest 
+```powershell
+$result=Invoke-RestMethod -Method GET `
+    -Uri "uri" `
+    -Headers @{'accept'='stuff'}
+```
