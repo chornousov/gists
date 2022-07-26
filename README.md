@@ -108,6 +108,18 @@ echo 'content goes here'
 EOF
 ```
 
+### git commit short
+```bash
+git rev-parse --short HEAD
+# OR
+git log -1 --pretty=%H | cut -c-7
+```
+
+### bash remove line / delete line from file
+```bash
+sed -i '/text/d' ./filename
+```
+
 ### powershell filter / powershell where 
 if the result of the filter is a single item - powershell treats it as an object, not array. Need to explicitly make it array
 ```powershell
@@ -138,4 +150,17 @@ $(TempPipelineVariable)
 $result=Invoke-RestMethod -Method GET `
     -Uri "uri" `
     -Headers @{'accept'='stuff'}
+```
+
+### bash curl
+```bash
+result=$(curl -s --request POST \
+    --url 'url' \
+    --header 'accept: stuff')
+```
+
+### jq select 
+```bash
+# { items: [ {name: 'smth'} ] }
+result=$(echo $jsonString | jq '.items[] | select(.name=="'"$name"'")')
 ```
