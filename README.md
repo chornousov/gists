@@ -6,7 +6,9 @@ fi
 ```
 
 ### Bash to upper
-
+```bash
+upper=$(echo ${lower^^})
+```
 
 ### docker: npm install with cache
 ```bash
