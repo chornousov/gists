@@ -107,6 +107,9 @@ cat package.json | grep -E '"(tslint|eslint)": "'
 ```bash
 cat > filename.txt << EOF
 echo 'content goes here'
+# if you want to access variables in runtime instead of 'creation' time, need to escape $ sign
+# \$runtime_variable
+# $creationtime_variable
 EOF
 ```
 
@@ -115,6 +118,12 @@ EOF
 git rev-parse --short HEAD
 # OR
 git log -1 --pretty=%H | cut -c-7
+```
+
+### bash substring
+```bash
+str="some string"
+echo ${str:0:3}
 ```
 
 ### bash remove line / delete line from file
@@ -165,4 +174,79 @@ result=$(curl -s --request POST \
 ```bash
 # { items: [ {name: 'smth'} ] }
 result=$(echo $jsonString | jq '.items[] | select(.name=="'"$name"'")')
+```
+
+### js ignore first items in array / skip first array items
+```js
+const [ , , ...args] = process.argv
+// OR
+const args = process.argv.splice(2)
+```
+
+### bash -c multiline / sh -c multiline
+```bash
+docker run --rm node:16.13.1-alpine sh -c "
+    node -v &&
+    npm -v &&
+    echo 'something' &&
+    printenv"
+```
+
+### bash get column / docker images id
+```bash
+# filter by name, take 3rd column - imageID
+imageID=$(docker images | grep yourimagename | awk '{print $3}')
+```
+
+### bash variable empty / bash variable not set
+```bash
+if [ -z "$variable" ]; then
+    echo 'empty'
+else 
+    echo 'has value'
+fi
+```
+
+### bash remove files by user
+```bash
+find . -user root | xargs rm -rf
+```
+
+### curl performance metrics
+```bash
+curl -L -w "
+   time_namelookup: %{time_namelookup}s
+      time_connect: %{time_connect}s
+   time_appconnect: %{time_appconnect}s
+  time_pretransfer: %{time_pretransfer}s
+     time_redirect: %{time_redirect}s
+time_starttransfer: %{time_starttransfer}s
+ ----------
+        time_total: %{time_total}s\n" -o /dev/null -s https://google.com
+```
+OR
+```bash
+curl -L -w "\n   time_namelookup: %{time_namelookup}s\n      time_connect: %{time_connect}s\n   time_appconnect: %{time_appconnect}s\n  time_pretransfer: %{time_pretransfer}s\n     time_redirect: %{time_redirect}s\ntime_starttransfer: %{time_starttransfer}s\n
+ ----------\n        time_total: %{time_total}s\n" -o /dev/null -s https://google.com
+```
+OR 
+```bash
+echo "
+   time_namelookup: %{time_namelookup}s\n
+      time_connect: %{time_connect}s\n
+   time_appconnect: %{time_appconnect}s\n
+  time_pretransfer: %{time_pretransfer}s\n
+     time_redirect: %{time_redirect}s\n
+time_starttransfer: %{time_starttransfer}s\n
+ ----------\n
+        time_total: %{time_total}s\n" > curl_metrics.txt
+
+curl -L -w "@curl_metrics.txt" -o /dev/null -s https://google.com
+```
+
+### bash verify files in folder
+```bash
+if test -n "$(find . -type f -name "*.spec.ts" -print -quit)"; then
+    echo 'Found files'
+fi
 ```
