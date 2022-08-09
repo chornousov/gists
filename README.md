@@ -113,11 +113,20 @@ echo 'content goes here'
 EOF
 ```
 
-### git commit short
+### git commit short / git sha
 ```bash
 git rev-parse --short HEAD
 # OR
 git log -1 --pretty=%H | cut -c-7
+# OR
+git show -s --format='%H'  # long sha
+git show -s --format='%h'  # short
+```
+
+### git author git email
+```bash
+git show -s --format='%aE' # email
+git show -s --format='%aN' # name
 ```
 
 ### bash substring
@@ -249,4 +258,64 @@ curl -L -w "@curl_metrics.txt" -o /dev/null -s https://google.com
 if test -n "$(find . -type f -name "*.spec.ts" -print -quit)"; then
     echo 'Found files'
 fi
+```
+
+### linux server info / os version / kernel
+``` bash
+cat /etc/os-release
+uname -a
+```
+
+### linux server info full / linux stats
+```bash
+cat /etc/os-release
+uname -a
+# busybox version
+# busybox | head -1
+free -mt    # memory in MB + total
+# egrep 'Mem|Cache|Swap' /proc/meminfo
+df -h       # disk space
+
+printenv
+
+docker -v
+docker images
+
+node -v && npm -v
+npm list -g --depth 0   # npm global packages installed 
+
+dotnet --info
+# dotnet --version
+# dotnet --list-sdks
+# dotnet --list-runtimes
+```
+
+### bash folder size
+```bash
+du -hs      # current dir
+du -hs *    # all in current dir
+du -h       # ALL RECURSIVE
+du -hs * | sort -h -r # sort by size
+```
+
+### bash env variables
+```bash
+export PATH=/some/path:$PATH
+printenv
+```
+
+### grep result / grep empty
+```bash
+if printenv | grep -q "dotnet"; then echo 'exist'; else echo 'nope'; fi
+```
+
+### cypress git info docker
+```yaml
+environment:
+- COMMIT_INFO_BRANCH=$(Build.SourceBranch)
+- COMMIT_INFO_MESSAGE=$(Build.SourceVersionMessage)
+- COMMIT_INFO_EMAIL=$(git show -s --format='%aE')
+- COMMIT_INFO_AUTHOR=$(git show -s --format='%aN')
+- COMMIT_INFO_SHA=$(git show --pretty=format:'%H')
+- COMMIT_INFO_REMOTE=$(git config --get remote.origin.url)
 ```
