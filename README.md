@@ -82,6 +82,11 @@ if [ ! -d 'folder' ]    # folder does not exist
 
 ```
 
+### bash regex
+```bash
+cat some.yaml | grep 'version: ' | grep -oE '[0-9]+\.[0-9]+\.[0-9]+'
+```
+
 ### bash get package version from package.json 
 ```bash
 versionRegex='".?[0-9]+\.[0-9]+\.[0-9]+"'
@@ -134,6 +139,12 @@ git show -s --format='%aN' # name
 str="some string"
 echo ${str:0:3}
 ```
+
+### bash replace string
+```bash
+orig="something"
+new="${orig/thi/}" # replace "thi" with empty
+``` 
 
 ### bash remove line / delete line from file
 ```bash
@@ -272,22 +283,44 @@ cat /etc/os-release
 uname -a
 # busybox version
 # busybox | head -1
+uptime
+
 free -mt    # memory in MB + total
 # egrep 'Mem|Cache|Swap' /proc/meminfo
 df -h       # disk space
 
 printenv
 
-docker -v
-docker images
+if type -p docker; then
+    docker -v
+    docker system df
+    docker images
+else 
+    echo 'No docker.'
+fi
 
-node -v && npm -v
-npm list -g --depth 0   # npm global packages installed 
+if type -p node; then
+    node -v && npm -v
+    npm list -g --depth 0   # npm global packages installed 
+else 
+    echo 'No node.'
+fi
 
-dotnet --info
-# dotnet --version
-# dotnet --list-sdks
-# dotnet --list-runtimes
+if type -p dotnet; then
+    dotnet --info
+    # dotnet --version
+    # dotnet --list-sdks
+    # dotnet --list-runtimes
+else 
+    echo 'No dotnet.'
+fi
+
+if type -p java; then
+    type -p java
+    java --version
+else 
+    echo 'No java.'
+fi
 ```
 
 ### bash folder size
