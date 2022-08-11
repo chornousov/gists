@@ -82,8 +82,9 @@ if [ ! -d 'folder' ]    # folder does not exist
 
 ```
 
-### bash regex
+### bash regex / grep regex
 ```bash
+# extract version number
 cat some.yaml | grep 'version: ' | grep -oE '[0-9]+\.[0-9]+\.[0-9]+'
 ```
 
@@ -352,3 +353,41 @@ environment:
 - COMMIT_INFO_SHA=$(git show --pretty=format:'%H')
 - COMMIT_INFO_REMOTE=$(git config --get remote.origin.url)
 ```
+
+### powershell dll version
+```powershell
+Get-ChildItem $path `
+    | Select-Object -ExpandProperty VersionInfo `
+    | Select-Object FileVersion `
+    | Select-Object -ExpandProperty FileVersion 
+```
+
+### powershell create object / powershell object with properties
+```powershell
+$list = @()
+$data = New-Object -TypeName psobject
+$data | Add-Member -MemberType NoteProperty -Name MyFieldName1 -Value 123123
+$data | Add-Member -MemberType NoteProperty -Name MyFieldName2 -Value 123123
+$list += $data
+$list | Format-Table -Property MyFieldName1, MyFieldName2 # print as table
+```
+
+### bash iterate over folders / bash loop folders
+```bash
+# find folders in specific folder
+dirs=(folder/*/)  # or (*/) for current folder
+for dir in "${dirs[@]}"; do echo $dir; done
+```
+
+### git changed files
+```bash
+# --diff-filter: Added (A), Copied (C), Deleted (D), Modified (M), Renamed (R)
+commitId=$(git show -s --pretty=%H)  # current/latest commit
+changed=$(git diff --diff-filter=ACMR remotes/origin/master...$commitId --name-only)
+```
+
+### keyboard arrows
+arrow up:    Alt+24 : ↑
+arrow down:  Alt+25 : ↓
+arrow right: Alt+26 : →
+arrow left:  Alt+27 : ←
