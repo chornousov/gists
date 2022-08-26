@@ -434,3 +434,8 @@ do
     echo $line
 done < file.txt
 ```
+
+### bash ternary
+```bash
+[[ ! -z "$var" ]] && echo "Not Empty" || echo "Empty"
+```
