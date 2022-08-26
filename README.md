@@ -219,6 +219,12 @@ docker run --rm node:16.13.1-alpine sh -c "
 imageID=$(docker images | grep yourimagename | awk '{print $3}')
 ```
 
+### docker image id by name and tag
+```bash
+# format, filter by name:tag, take 2nd column - imageID
+imageID=$(docker images --format "{{.Repository}}:{{.Tag}} {{.ID}}" | grep $imageNameTag | awk '{print $2}')
+```
+
 ### bash variable empty / bash variable not set
 ```bash
 if [ -z "$variable" ]; then
@@ -327,9 +333,13 @@ fi
 ### bash folder size
 ```bash
 du -hs      # current dir
+du -hs ~/.npm # npm cache size
 du -hs *    # all in current dir
 du -h       # ALL RECURSIVE
 du -hs * | sort -h -r # sort by size
+du -hs ~/{.[^.],}* | sort -hr # ALL files and folders in current dir including hidden
+
+ncdu ~  # interactive usage
 ```
 
 ### bash env variables
@@ -391,3 +401,32 @@ arrow up:    Alt+24 : ↑
 arrow down:  Alt+25 : ↓
 arrow right: Alt+26 : →
 arrow left:  Alt+27 : ←
+
+### bash split by comma
+```bash
+IFS=',' read -r -a array <<< "comma,separated,string"
+```
+
+### bash iterate by comma separated string values
+```bash
+IFS=',' read -r -a array <<< "comma,separated,string"
+for value in "${array[@]}"
+do
+    echo $value
+done
+```
+
+### bash iterate json array, jq iterate array
+```bash
+while IFS= read -r value; do
+    echo $value
+done < <(echo "${jsonArrayString}" | jq -c '.[]')
+```
+
+### bash iterate multiline file
+```bash
+while read -r line
+do
+    echo $line
+done < file.txt
+```
