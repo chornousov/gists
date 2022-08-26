@@ -1,3 +1,5 @@
+# DISCLAIMER: these are just examples that WORK, not best practices
+
 ### docker: Delete dangling images
 ```bash
 if [[ $(docker images -f "dangling=true" -q) ]]; then
@@ -8,6 +10,8 @@ fi
 ### Bash to upper
 ```bash
 upper=$(echo ${lower^^})
+# OR just
+upper=${lower^^}
 ```
 
 ### docker: npm install with cache
